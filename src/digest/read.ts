@@ -57,7 +57,7 @@ export const readNight: ReadNight = (runsDir, night): ReadNightResult => {
       row.runs += 1;
       if (record.status === 'retry') row.retries += 1;
       row.lastStatus = record.status;
-      row.lastError = record.error;
+      if (record.error !== null) row.lastError = record.error;
       row.lastAt = record.at;
       continue;
     }

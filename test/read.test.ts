@@ -15,7 +15,7 @@ describe('readNight', () => {
       runs: 4,
       retries: 3,
       lastStatus: 'ok',
-      lastError: null,
+      lastError: 'upstream 503',
       firstAt: '2026-10-29T01:30:00+01:00',
       lastAt: '2026-10-29T01:37:00+01:00',
     });
@@ -34,6 +34,12 @@ describe('readNight', () => {
       retries: 0,
       lastStatus: 'fail',
       lastError: 'quota exceeded',
+    });
+    expect(rows.get('lane/sync')).toMatchObject({
+      runs: 8,
+      retries: 1,
+      lastStatus: 'ok',
+      lastError: 'lock held',
     });
   });
 });
