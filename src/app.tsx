@@ -40,5 +40,21 @@ export function createApp(config: RigConfig = loadConfig()) {
     }
   });
 
+  app.get('/api/digest/:night', (c) => {
+    const { night } = c.req.param();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(night)) return c.text('Not Found', 404);
+
+    try {
+      const result = readNight(config.runsDir, night);
+      return c.json({
+        ...result,
+        rows: [...result.rows].sort((a, b) => a.job.localeCompare(b.job)),
+      });
+    } catch (error) {
+      if (isMissingFile(error)) return c.text('Not Found', 404);
+      throw error;
+    }
+  });
+
   return app;
 }
